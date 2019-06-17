@@ -32,9 +32,7 @@
     "postgrator-cli": "^3.1.0",
     "supertest": "^3.3.0"
   },
-  "contributors": [
-    "Thomas `tomatao` Hudspith-Tatham <iammotivated@gmail.com>",
-    "Joshua Reade Harris <jharris@thinkful.com>"
-  ],
-  "license": "MIT"
+  "engines": {
+    "node": "11.5.0"
+  }
 }
