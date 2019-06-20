@@ -5,7 +5,7 @@ const cors = require('cors')
 const { CLIENT_ORIGIN } = require('./config');
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
-const thingsRouter = require('./things/things-router')
+const propertiesRouter = require('./properties/properties-router')
 const reviewsRouter = require('./reviews/reviews-router')
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
@@ -15,14 +15,10 @@ const app = express()
 app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
   skip: () => NODE_ENV === 'test',
 }))
-app.use(
-  cors({
-    origin: CLIENT_ORIGIN
-  })
-);
+app.use(cors());
 app.use(helmet())
 
-app.use('/api/things', thingsRouter)
+app.use('/api/properties', propertiesRouter)
 app.use('/api/reviews', reviewsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)

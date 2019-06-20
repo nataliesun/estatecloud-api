@@ -4,9 +4,9 @@ const config = require('../config')
 
 
 const AuthService = {
-    getUserWithUserName(db, user_name) {
-        return db('thingful_users')
-            .where({ user_name })
+    getUserWithEmail(db, email) {
+        return db('estatecloud_users')
+            .where({ email })
             .first()
     },
     comparePasswords(password, hash) {

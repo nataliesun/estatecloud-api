@@ -4,16 +4,16 @@ const xss = require('xss')
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
 
 const UsersService = {
-    hasUserWithUserName(db, user_name) {
-        return db('thingful_users')
-            .where({ user_name })
+    hasUserWithEmail(db, email) {
+        return db('estatecloud_users')
+            .where({ email })
             .first()
             .then(user => !!user)
     },
     insertUser(db, newUser) {
         return db
             .insert(newUser)
-            .into('thingful_users')
+            .into('estatecloud_users')
             .returning('*')
             .then(([user]) => user)
     },

@@ -7,36 +7,36 @@ const jsonBodyParser = express.json()
 
 usersRouter
     .post('/', jsonBodyParser, (req, res, next) => {
-        const { password, user_name, full_name, nickname } = req.body
+        const { password, email, first_name, last_name } = req.body
 
-        for (const field of ['full_name', 'user_name', 'password'])
+        for (const field of ['first_name', 'email', 'password'])
             if (!req.body[field])
                 return res.status(400).json({
                     error: `Missing '${field}' in request body`
                 })
 
-        // TODO: check user_name doesn't start with spaces
+        // TODO: check email doesn't start with spaces
 
         const passwordError = UsersService.validatePassword(password)
 
         if (passwordError)
             return res.status(400).json({ error: passwordError })
 
-        UsersService.hasUserWithUserName(
+        UsersService.hasUserWithEmail(
             req.app.get('db'),
-            user_name
+            email
         )
-            .then(hasUserWithUserName => {
-                if (hasUserWithUserName)
-                    return res.status(400).json({ error: `Username already taken` })
+            .then(hasUserWithEmail => {
+                if (hasUserWithEmail)
+                    return res.status(400).json({ error: `Email already taken` })
 
                 return UsersService.hashPassword(password)
                     .then(hashedPassword => {
                         const newUser = {
-                            user_name,
+                            email,
                             password: hashedPassword,
-                            full_name,
-                            nickname,
+                            first_name,
+                            last_name,
                             date_created: 'now()',
                         }
 
