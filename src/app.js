@@ -6,7 +6,7 @@ const { CLIENT_ORIGIN } = require('./config');
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const propertiesRouter = require('./properties/properties-router')
-const reviewsRouter = require('./reviews/reviews-router')
+const reservationsRouter = require('./reservations/reservations-router')
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
 
@@ -19,7 +19,7 @@ app.use(cors());
 app.use(helmet())
 
 app.use('/api/properties', propertiesRouter)
-app.use('/api/reviews', reviewsRouter)
+app.use('/api/reservations', reservationsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
 
