@@ -7,6 +7,19 @@ const reservationsRouter = express.Router();
 const jsonBodyParser = express.json();
 
 reservationsRouter
+  .route('/user')
+  .all(requireAuth)
+  .get((req, res, next) => {
+    const { id } = req.user
+
+    ReservationsService.getReservationsForUser(req.app.get('db'), id)
+      .then(count => {
+        res.json(count[0]);
+      })
+      .catch(next);
+  })
+
+reservationsRouter
   .route('/:property_id')
   .all(requireAuth)
   .get((req, res, next) => {
@@ -60,5 +73,6 @@ reservationsRouter
       })
       .catch(next)
   })
+
 
 module.exports = reservationsRouter;

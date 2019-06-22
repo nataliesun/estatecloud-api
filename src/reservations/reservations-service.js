@@ -25,6 +25,13 @@ const ReservationsService = {
       .then(reservation => this.getById(db, reservation.id))
   },
 
+  getReservationsForUser(db, user_id) {
+    return db
+      .from('estatecloud_reservations')
+      .count()
+      .where('user_id', user_id)
+  },
+
   deleteReservation(db, id) {
     return db
       .from('estatecloud_reservations')
