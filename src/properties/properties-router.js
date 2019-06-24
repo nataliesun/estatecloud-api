@@ -13,9 +13,7 @@ propertiesRouter
     PropertiesService.getPropertiesForUser(req.app.get('db'), req.user.id)
       .then(properties => {
         if (!properties.length) {
-          return res.status(400).json({
-            error: `No properties found for user`
-          })
+          return res.json({})
         }
         return res.json(PropertiesService.calculateSerializedPropertyData(properties))
       })
@@ -48,6 +46,32 @@ propertiesRouter
 
 propertiesRouter
   .route('/:property_id')
+  .get((req, res, next) => {
+    const { property_id } = req.params
+    PropertiesService.getById(req.app.get('db'), property_id)
+      .then(property => res.json(property))
+  })
+  .patch(jsonBodyParser, (req, res, next) => {
+
+    const { address, city, state, status, rent_price, mortgage_payment, initial_price } = req.body
+    const propertyToUpdate = { address, city, state, status, rent_price, mortgage_payment, initial_price }
+
+    for (const [key, value] of Object.entries(propertyToUpdate))
+      if (value == null)
+        return res.status(400).json({
+          error: `Missing '${key}' in request body`
+        });
+
+    PropertiesService.updateProperty(
+      req.app.get('db'),
+      req.params.property_id,
+      propertyToUpdate
+    )
+      .then(numRowsAffected => {
+        res.status(204).end()
+      })
+      .catch(next)
+  })
   .delete((req, res, next) => {
     const { property_id } = req.params
     PropertiesService.deleteProperty(
