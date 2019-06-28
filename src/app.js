@@ -9,6 +9,7 @@ const propertiesRouter = require('./properties/properties-router')
 const reservationsRouter = require('./reservations/reservations-router')
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
+const friendsRouter = require('./friends/friends-router')
 
 const app = express()
 
@@ -22,6 +23,7 @@ app.use('/api/properties', propertiesRouter)
 app.use('/api/reservations', reservationsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/friends', friendsRouter)
 
 app.use(function errorHandler(error, req, res, next) {
   let response

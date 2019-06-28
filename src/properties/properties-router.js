@@ -93,20 +93,6 @@ propertiesRouter
 
 
 
-propertiesRouter.route('/:thing_id/reviews/')
-  .all(requireAuth)
-  .all(checkThingExists)
-  .get((req, res, next) => {
-    PropertiesService.getReviewsForThing(
-      req.app.get('db'),
-      req.params.thing_id
-    )
-      .then(reviews => {
-        res.json(PropertiesService.serializeThingReviews(reviews))
-      })
-      .catch(next)
-  })
-
 /* async/await syntax for promises */
 async function checkThingExists(req, res, next) {
   try {

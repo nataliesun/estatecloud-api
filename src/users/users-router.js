@@ -40,6 +40,8 @@ usersRouter
                             date_created: 'now()',
                         }
 
+                        console.log(newUser)
+
                         return UsersService.insertUser(
                             req.app.get('db'),
                             newUser
@@ -54,5 +56,6 @@ usersRouter
             })
             .catch(next)
     })
+
 
 module.exports = usersRouter
