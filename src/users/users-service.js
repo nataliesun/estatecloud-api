@@ -17,6 +17,13 @@ const UsersService = {
             .returning('*')
             .then(([user]) => user)
     },
+    getUserName(db, id) {
+        return db
+            .from('estatecloud_users')
+            .select('first_name')
+            .where({ id })
+            .first()
+    },
     validatePassword(password) {
         if (password.length < 8) {
             return 'Password be longer than 8 characters'

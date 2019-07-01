@@ -12,9 +12,13 @@ reservationsRouter
   .get((req, res, next) => {
     const { id } = req.user
 
-    ReservationsService.getReservationsForUser(req.app.get('db'), id)
-      .then(count => {
-        res.json(count[0]);
+    Promise.all([ReservationsService.getReservationsAtUserProperties(req.app.get('db'), id), ReservationsService.getReservationsMadeByUser(req.app.get('db'), id)])
+      .then(([owned, made]) => {
+        const reservations = {
+          owned: owned[0].count,
+          made: made[0].count
+        }
+        res.json(reservations)
       })
       .catch(next);
   })

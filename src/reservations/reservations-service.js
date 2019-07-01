@@ -25,11 +25,24 @@ const ReservationsService = {
       .then(reservation => this.getById(db, reservation.id))
   },
 
-  getReservationsForUser(db, user_id) {
+  getReservationsAtUserProperties(db, user_id) {
     return db
-      .from('estatecloud_reservations')
-      .count()
-      .where('user_id', user_id)
+      .from('estatecloud_reservations as res')
+      // .select('res.user_id', 'res.id as res_id', 'property_id', 'prop.address', 'prop.user_id as prop_owner')
+      .count('*')
+      .innerJoin('estatecloud_properties as prop', 'res.property_id', 'prop.id')
+      .where('prop.user_id', user_id)
+
+  },
+
+  getReservationsMadeByUser(db, user_id) {
+    return db
+      .from('estatecloud_reservations as res')
+      // .select('res.user_id', 'res.id as res_id', 'property_id', 'prop.address', 'prop.user_id as prop_owner')
+      .count('*')
+      .innerJoin('estatecloud_properties as prop', 'res.property_id', 'prop.id')
+      .where('res.user_id', user_id)
+
   },
 
   deleteReservation(db, id) {
