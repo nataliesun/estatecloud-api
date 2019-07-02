@@ -24,13 +24,22 @@ reservationsRouter
   })
 
 reservationsRouter
-  .route('/:property_id')
+  .route('/property/:property_id')
   .all(requireAuth)
   .get((req, res, next) => {
     ReservationsService.getReservationsForProperty(req.app.get('db'), req.params.property_id)
       .then(reservations => {
         res.json(ReservationsService.serializeReservations(reservations));
       })
+      .catch(next);
+  })
+
+reservationsRouter
+  .route('/reservation/:reservation_id')
+  .all(requireAuth)
+  .get((req, res, next) => {
+    ReservationsService.getReservationDetails(req.app.get('db'), req.params.reservation_id)
+      .then(details => res.json(details))
       .catch(next);
   })
 

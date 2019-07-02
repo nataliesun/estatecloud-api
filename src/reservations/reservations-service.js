@@ -16,6 +16,21 @@ const ReservationsService = {
       .first()
   },
 
+  getReservationDetails(db, reservation_id) {
+    return db
+      .select(
+        'res.user_id as res_user',
+        'res.id as res_id',
+        'usrs.first_name',
+        'usrs.last_name',
+        'res.date_created'
+      )
+      .from('estatecloud_reservations as res')
+      .innerJoin('estatecloud_users as usrs', 'res.user_id', 'usrs.id')
+      .where('res.id', reservation_id)
+      .first()
+  },
+
   insertReservationForProperty(db, reservation) {
     return db
       .insert(reservation)
