@@ -82,8 +82,8 @@ const ReservationsService = {
       id: reservation.id,
       user_id: reservation.user_id,
       title: xss(reservation.title),
-      start_date: reservation.start_date,
-      end_date: reservation.end_date,
+      start: reservation.start_date,
+      end: reservation.end_date,
       all_day: reservation.all_day,
       property_id: reservation.property_id,
       date_created: reservation.date_created

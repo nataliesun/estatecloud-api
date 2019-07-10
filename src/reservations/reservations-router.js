@@ -29,10 +29,6 @@ reservationsRouter
   .get((req, res, next) => {
     ReservationsService.getReservationsForProperty(req.app.get('db'), req.params.property_id)
       .then(reservations => {
-        if (!reservations.length) {
-          res.status(404).json({ error: `Reservation doesn't exist` })
-          next()
-        }
         res.json(ReservationsService.serializeReservations(reservations));
       })
       .catch(next);

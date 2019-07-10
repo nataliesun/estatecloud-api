@@ -85,23 +85,6 @@ const PropertiesService = {
     }
   },
 
-  serializeThingReview(review) {
-    const reviewTree = new Treeize()
-
-    // Some light hackiness to allow for the fact that `treeize`
-    // only accepts arrays of objects, and we want to use a single
-    // object.
-    const reviewData = reviewTree.grow([review]).getData()[0]
-
-    return {
-      id: reviewData.id,
-      rating: reviewData.rating,
-      thing_id: reviewData.thing_id,
-      text: xss(reviewData.text),
-      user: reviewData.user || {},
-      date_created: reviewData.date_created,
-    }
-  },
 }
 
 const userFields = [

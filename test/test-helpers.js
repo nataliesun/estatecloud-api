@@ -318,6 +318,14 @@ function makeMaliciousReservation(user, property) {
 
 function makeExpectedReservationsForProperty(propertyId, reservations) {
   return reservations.filter(reservation => reservation.property_id === propertyId)
+    .map(filteredRes => {
+      const { all_day, date_created, id, property_id, title, user_id } = filteredRes;
+      return {
+        all_day, date_created, id, property_id, title, user_id,
+        start: filteredRes.start_date,
+        end: filteredRes.end_date,
+      }
+    })
 }
 
 function seedMaliciousReservation(db, reservation) {

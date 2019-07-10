@@ -158,12 +158,12 @@ describe('Reservations Endpoints', function () {
     )
 
     context(`Given no reservations`, () => {
-      it(`responds with 404`, () => {
+      it(`responds with 200 and an empty array`, () => {
         const propertyId = 123456
         return supertest(app)
           .get(`/api/reservations/property/${propertyId}`)
           .set('Authorization', helpers.makeAuthHeader(testUser))
-          .expect(404, { error: `Reservation doesn't exist` })
+          .expect(200, [])
       })
     })
 
@@ -419,7 +419,14 @@ describe('Reservations Endpoints', function () {
       )
 
       it('responds with 200 and all of the reservations', () => {
-        const expectedReservations = testReservations
+        const expectedReservations = testReservations.map(reservation => {
+          const { id, property_id, user_id, title, all_day, date_created } = reservation
+          return {
+            id, property_id, user_id, title, all_day, date_created,
+            start: reservation.start_date,
+            end: reservation.end_date,
+          }
+        })
 
         return supertest(app)
           .get('/api/reservations')
@@ -485,7 +492,14 @@ describe('Reservations Endpoints', function () {
 
       it('removes the reservation by id and returns the id of deleted reservation', () => {
         const idToRemove = testReservations[0].id
-        const expectedReservations = testReservations.filter(res => res.id !== idToRemove)
+        const expectedReservations = testReservations.filter(res => res.id !== idToRemove).map(filteredRes => {
+          const { all_day, date_created, id, property_id, title, user_id } = filteredRes;
+          return {
+            all_day, date_created, id, property_id, title, user_id,
+            start: filteredRes.start_date,
+            end: filteredRes.end_date,
+          }
+        })
         return supertest(app)
           .delete(`/api/reservations/${idToRemove}`)
           .set('Authorization', helpers.makeAuthHeader(testUser))

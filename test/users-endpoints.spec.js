@@ -23,7 +23,7 @@ describe('Users Endpoints', function () {
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  describe.only(`POST /api/users`, () => {
+  describe(`POST /api/users`, () => {
     context(`User Validation`, () => {
       beforeEach('insert users', () =>
         helpers.seedUsers(
