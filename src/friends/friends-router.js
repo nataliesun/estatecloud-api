@@ -16,7 +16,7 @@ friendsRouter
     UsersService.hasUserWithEmail(db, user_email)
       .then(hasUser => {
         if (!hasUser) {
-          return res.status(400).json({ error: `Can't find user with email` })
+          return res.status(404).json({ error: `Can't find user with email` })
         }
         FriendsService.getPropertiesForFriend(db, user_email)
           .then(properties => res.json(properties))

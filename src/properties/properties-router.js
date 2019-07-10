@@ -13,9 +13,9 @@ propertiesRouter
     PropertiesService.getPropertiesForUser(req.app.get('db'), req.user.id)
       .then(properties => {
         if (!properties.length) {
-          return res.json({})
+          return res.json([])
         }
-        return res.json(PropertiesService.calculateSerializedPropertyData(properties))
+        return res.json(PropertiesService.serializeProperties(properties))
       })
       .catch(next)
   })
@@ -46,10 +46,19 @@ propertiesRouter
 
 propertiesRouter
   .route('/:property_id')
+  .all(requireAuth)
   .get((req, res, next) => {
     const { property_id } = req.params
     PropertiesService.getById(req.app.get('db'), property_id)
-      .then(property => res.json(property))
+      .then(property => {
+        if (!property) {
+          res.status(404).json({ error: `Property doesn't exist` })
+          next()
+        } else {
+
+          res.json(PropertiesService.serializeProperty(property))
+        }
+      })
   })
   .patch(jsonBodyParser, (req, res, next) => {
 

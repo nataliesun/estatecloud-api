@@ -1,6 +1,12 @@
 const xss = require('xss')
 
 const ReservationsService = {
+  getAllReservations(db) {
+    return db
+      .from('estatecloud_reservations')
+      .select('*')
+  },
+
   getReservationsForProperty(db, property_id) {
     return db
       .from('estatecloud_reservations')
@@ -75,9 +81,12 @@ const ReservationsService = {
     return {
       id: reservation.id,
       user_id: reservation.user_id,
-      title: reservation.title,
-      start: reservation.start_date,
-      end: reservation.end_date,
+      title: xss(reservation.title),
+      start_date: reservation.start_date,
+      end_date: reservation.end_date,
+      all_day: reservation.all_day,
+      property_id: reservation.property_id,
+      date_created: reservation.date_created
     }
   }
 }

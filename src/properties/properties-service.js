@@ -65,61 +65,23 @@ const PropertiesService = {
   },
 
 
-  calculateSerializedPropertyData(dbProperties) {
-    const propertyData = {
-      portfolio_value: 0,
-      availability: [0, 0, 0],
-      properties: []
-    }
-
-    if (dbProperties.length > 1) {
-      propertyData.portfolio_value = dbProperties.reduce((total, current) => total.initial_price + current.initial_price)
-    } else {
-      propertyData.portfolio_value = dbProperties[0].initial_price
-    }
-
-    for (let i = 0; i < dbProperties.length; i++) {
-      if (dbProperties[i].status === "available")
-        propertyData.availability[0] = propertyData.availability[0] + 1
-
-      else if (dbProperties[i].status === "occupied")
-        propertyData.availability[1] = propertyData.availability[1] + 1
-
-      else
-        propertyData.availability[2] = propertyData.availability[2] + 1
-    }
-
-    propertyData.properties = dbProperties.map(p => {
-      return {
-        id: p.id,
-        address: xss(p.address),
-        city: xss(p.city),
-        state: xss(p.state),
-        rent_price: p.rent_price,
-        profit: (p.rent_price - p.mortgage_payment)
-      }
-    })
-
-    return propertyData
+  serializeProperties(properties) {
+    return properties.map(property => this.serializeProperty(property))
   },
 
   serializeProperty(property) {
-    const propertyTree = new Treeize()
-
-    // Some light hackiness to allow for the fact that `treeize`
-    // only accepts arrays of objects, and we want to use a single
-    // object.
-    const propertyData = propertyTree.grow([property]).getData()[0]
 
     return {
-      id: propertyData.id,
-      address: xss(propertyData.address),
-      city: xss(propertyData.city),
-      date_created: propertyData.date_created,
-      status: xss(propertyData.status),
-      rent_price: propertyData.rent_price,
-      initial_price: propertyData.initial_price,
-      mortgage_payment: propertyData.mortgage_payment,
+      id: property.id,
+      address: xss(property.address),
+      city: xss(property.city),
+      state: xss(property.state),
+      date_created: property.date_created,
+      status: xss(property.status),
+      rent_price: property.rent_price,
+      initial_price: property.initial_price,
+      mortgage_payment: property.mortgage_payment,
+      user_id: property.user_id
     }
   },
 
