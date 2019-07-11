@@ -500,6 +500,7 @@ describe('Reservations Endpoints', function () {
             end: filteredRes.end_date,
           }
         })
+
         return supertest(app)
           .delete(`/api/reservations/${idToRemove}`)
           .set('Authorization', helpers.makeAuthHeader(testUser))
