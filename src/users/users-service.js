@@ -51,6 +51,12 @@ const UsersService = {
             email: xss(user.email)
         }
     },
+    deleteUserByEmail(db, email) {
+        return db.from('estatecloud_users')
+            .delete()
+            .where('email', email)
+            .returning('*')
+    }
 }
 
 module.exports = UsersService

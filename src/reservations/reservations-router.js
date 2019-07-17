@@ -103,5 +103,24 @@ reservationsRouter
       .catch(next)
   })
 
+reservationsRouter
+  .route('/demo')
+  .all(requireAuth)
+  .post(jsonBodyParser, (req, res, next) => {
+    const newReservations = req.body.map(reservation => {
+      return {
+        ...reservation,
+        user_id: req.user.id
+      }
+    })
+
+    ReservationsService.insertReservations(req.app.get('db'), newReservations)
+      .then(reservations => {
+        res
+          .status(201)
+          .json(ReservationsService.serializeReservations(reservations));
+      })
+  })
+
 
 module.exports = reservationsRouter;

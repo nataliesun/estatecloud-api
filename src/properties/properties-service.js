@@ -32,6 +32,14 @@ const PropertiesService = {
       .then(([property]) => property)
       .then(property => this.getById(db, property.id))
   },
+  insertProperties(db, newProperties) {
+    return db
+      .insert(newProperties)
+      .into('estatecloud_properties')
+      .returning('*')
+      .then(res => res)
+    // .then(property => this.getById(db, property.id))
+  },
   updateProperty(knex, id, newPropertyFields) {
     return knex('estatecloud_properties')
       .where({ id })

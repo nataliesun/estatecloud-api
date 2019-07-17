@@ -100,6 +100,19 @@ propertiesRouter
       .catch(next)
   })
 
+propertiesRouter
+  .route('/demo')
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
+    const properties = req.body.map(property => {
+      return {
+        ...property,
+        user_id: req.user.id
+      }
+    })
+    PropertiesService.insertProperties(req.app.get('db'), properties)
+      .then(properties => res.json(properties))
+  })
+
 
 
 /* async/await syntax for promises */

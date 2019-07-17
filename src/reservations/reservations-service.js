@@ -88,6 +88,13 @@ const ReservationsService = {
       property_id: reservation.property_id,
       date_created: reservation.date_created
     }
+  },
+  insertReservations(db, reservations) {
+    return db
+      .insert(reservations)
+      .into('estatecloud_reservations')
+      .returning('*')
+      .then(res => res)
   }
 }
 

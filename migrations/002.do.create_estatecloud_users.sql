@@ -11,4 +11,4 @@ CREATE TABLE estatecloud_users (
 ALTER TABLE estatecloud_properties
   ADD COLUMN
     user_id INTEGER REFERENCES estatecloud_users(id)
-    ON DELETE SET NULL;
+    ON DELETE CASCADE;

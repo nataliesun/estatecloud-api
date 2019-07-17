@@ -58,6 +58,14 @@ usersRouter
     })
 
 usersRouter
+    .route('/:email')
+    .delete((req, res, next) => {
+        const email = req.params.email;
+        UsersService.deleteUserByEmail(req.app.get('db'), email)
+            .then(numRows => res.json(numRows))
+    })
+
+usersRouter
     .route('/userName')
     .all(requireAuth)
     .get((req, res, next) => {
